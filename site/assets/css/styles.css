@@ -39,6 +39,22 @@ body.menu-open {
   overflow: hidden;
 }
 
+html[lang="ko"] body {
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+  word-break: keep-all;
+}
+
+html[lang="ko"] .section-title,
+html[lang="ko"] .hero-title,
+html[lang="ko"] .page-title,
+html[lang="ko"] .quote-band blockquote,
+html[lang="ko"] .cta-panel h2,
+html[lang="ko"] .proof-number,
+html[lang="ko"] .stat-box strong,
+html[lang="ko"] .price {
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -234,6 +250,24 @@ a {
 .nav-cta.active {
   background: var(--lime);
   color: var(--ink) !important;
+}
+
+.site-nav .language-link {
+  margin-left: 8px;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.site-nav .language-link::after {
+  display: none;
+}
+
+.site-nav .language-link:hover {
+  border-color: var(--lime);
+  color: var(--white);
 }
 
 .menu-toggle {
@@ -1252,6 +1286,11 @@ a {
 
   .nav-cta {
     margin: 18px 0 0;
+    text-align: center;
+  }
+
+  .site-nav .language-link {
+    margin: 16px 0 0;
     text-align: center;
   }
 

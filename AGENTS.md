@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-The editable website lives in `site/`. Each top-level HTML file represents one route: `index.html`, `about.html`, `programs.html`, `trainers.html`, `pricing.html`, and `contact.html`. Shared styling is in `site/assets/css/styles.css`; shared navigation, accordion, form-validation, and footer behavior is in `site/assets/js/main.js`. Images and the favicon belong in `site/assets/images/`.
+The editable website lives in `site/`. Top-level HTML files provide the Vietnamese routes; `site/ko/` contains the matching Korean versions. Both locales include `index.html`, `about.html`, `programs.html`, `trainers.html`, `pricing.html`, and `contact.html`. Shared styling is in `site/assets/css/styles.css`; shared navigation, accordion, localized form validation, and footer behavior is in `site/assets/js/main.js`. Images and the favicon belong in `site/assets/images/`.
 
 Build utilities are under `scripts/`. `scripts/build.js` copies the source site into `dist/`, while `scripts/validate.js` checks required pages, menu links, duplicate IDs, and local asset references. Treat `dist/` as generated output: edit `site/`, then rebuild. Hosting metadata is stored in `.openai/hosting.json` and must not contain secrets.
 
@@ -18,11 +18,11 @@ Run `npm test` before building, and rebuild after every source change that shoul
 
 Use two-space indentation in HTML, CSS, JSON, and JavaScript. Prefer semantic HTML, accessible labels, keyboard-friendly controls, and reusable CSS classes over inline styles. Keep JavaScript dependency-free and use `const`, `let`, descriptive camelCase names, and early returns where practical. Use kebab-case for filenames and CSS classes, such as `trainer-card` or `hero-training.png`.
 
-Maintain Vietnamese for visitor-facing copy. Preserve the shared header, navigation destinations, and footer across all six pages.
+Keep visitor-facing copy in the page's declared language. Preserve the shared header, navigation destinations, language switcher, and footer across both locale versions.
 
 ## Testing Guidelines
 
-There is no external test framework or coverage threshold. `scripts/validate.js` is the required regression check. When adding a page, update its `expectedPages` list and add the page to every main navigation menu. Manually verify responsive navigation, FAQ accordions, and contact-form validation on both narrow and wide viewports.
+There is no external test framework or coverage threshold. `scripts/validate.js` is the required regression check. When adding a page, update its `expectedPages` list, create it for each locale, and add it to every main navigation menu. Manually verify responsive navigation, language switching, FAQ accordions, and localized contact-form validation on narrow and wide viewports.
 
 ## Commit & Pull Request Guidelines
 

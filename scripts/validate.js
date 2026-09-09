@@ -10,36 +10,45 @@ const expectedPages = [
   "pricing.html",
   "contact.html",
 ];
+const localizedDirectories = ["", "ko"];
 const errors = [];
 
-for (const page of expectedPages) {
-  const filePath = path.join(siteDir, page);
-  if (!fs.existsSync(filePath)) {
-    errors.push(`Thiếu trang: ${page}`);
-    continue;
-  }
-
-  const html = fs.readFileSync(filePath, "utf8");
-  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
-  const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
-
-  if (duplicateIds.length) {
-    errors.push(`${page}: ID bị trùng (${[...new Set(duplicateIds)].join(", ")})`);
-  }
-
-  for (const targetPage of expectedPages) {
-    if (!html.includes(`href="${targetPage}"`)) {
-      errors.push(`${page}: menu thiếu liên kết đến ${targetPage}`);
+for (const directory of localizedDirectories) {
+  for (const page of expectedPages) {
+    const relativePage = directory ? `${directory}/${page}` : page;
+    const filePath = path.join(siteDir, relativePage);
+    if (!fs.existsSync(filePath)) {
+      errors.push(`Thiếu trang: ${relativePage}`);
+      continue;
     }
-  }
 
-  const references = [...html.matchAll(/\s(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
-  for (const reference of references) {
-    if (/^(?:https?:|mailto:|tel:|#|data:)/.test(reference)) continue;
-    const cleanReference = reference.split(/[?#]/)[0];
-    const resolved = path.resolve(path.dirname(filePath), cleanReference);
-    if (!fs.existsSync(resolved)) {
-      errors.push(`${page}: không tìm thấy ${reference}`);
+    const html = fs.readFileSync(filePath, "utf8");
+    const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+    const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
+
+    if (duplicateIds.length) {
+      errors.push(`${relativePage}: ID bị trùng (${[...new Set(duplicateIds)].join(", ")})`);
+    }
+
+    for (const targetPage of expectedPages) {
+      if (!html.includes(`href="${targetPage}"`)) {
+        errors.push(`${relativePage}: menu thiếu liên kết đến ${targetPage}`);
+      }
+    }
+
+    const languageTarget = directory ? `../${page}` : `ko/${page}`;
+    if (!html.includes(`href="${languageTarget}"`)) {
+      errors.push(`${relativePage}: thiếu liên kết chuyển ngôn ngữ đến ${languageTarget}`);
+    }
+
+    const references = [...html.matchAll(/\s(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
+    for (const reference of references) {
+      if (/^(?:https?:|mailto:|tel:|#|data:)/.test(reference)) continue;
+      const cleanReference = reference.split(/[?#]/)[0];
+      const resolved = path.resolve(path.dirname(filePath), cleanReference);
+      if (!fs.existsSync(resolved)) {
+        errors.push(`${relativePage}: không tìm thấy ${reference}`);
+      }
     }
   }
 }
@@ -58,4 +67,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log("Kiểm tra đạt: đủ 6 trang, menu đầy đủ, không có liên kết hoặc tài nguyên cục bộ bị hỏng.");
+console.log("Kiểm tra đạt: đủ 12 trang Việt–Hàn, menu và chuyển ngôn ngữ đầy đủ, không có liên kết hoặc tài nguyên cục bộ bị hỏng.");
