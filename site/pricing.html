@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/supabase-client.js" defer></script>
+  <script src="assets/js/pricing.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
@@ -33,29 +34,8 @@
     </section>
 
     <section class="section">
-      <div class="container pricing-grid">
-        <article class="price-card">
-          <h2>Khởi động</h2>
-          <div class="price">3.600.000đ</div>
-          <span class="price-unit">4 buổi · sử dụng trong 30 ngày</span>
-          <ul class="feature-list"><li>Đánh giá thể lực ban đầu</li><li>4 buổi huấn luyện 1:1</li><li>Giáo án cơ bản cá nhân hóa</li><li>Hướng dẫn kỹ thuật nền tảng</li></ul>
-          <a class="button button-secondary" href="contact.html">Chọn gói này</a>
-        </article>
-        <article class="price-card featured">
-          <span class="popular-label">Phổ biến nhất</span>
-          <h2>Bứt phá</h2>
-          <div class="price">9.600.000đ</div>
-          <span class="price-unit">12 buổi · sử dụng trong 8 tuần</span>
-          <ul class="feature-list"><li>Đánh giá và đo chỉ số chuyên sâu</li><li>12 buổi huấn luyện 1:1</li><li>Giáo án cập nhật theo tuần</li><li>Hướng dẫn dinh dưỡng cơ bản</li><li>Báo cáo tiến bộ giữa kỳ</li></ul>
-          <a class="button button-primary" href="contact.html">Chọn gói này</a>
-        </article>
-        <article class="price-card">
-          <h2>Chuyển đổi</h2>
-          <div class="price">17.400.000đ</div>
-          <span class="price-unit">24 buổi · sử dụng trong 16 tuần</span>
-          <ul class="feature-list"><li>Toàn bộ quyền lợi gói Bứt phá</li><li>24 buổi huấn luyện 1:1</li><li>Theo dõi thói quen hằng tuần</li><li>2 lần đánh giá lại toàn diện</li><li>Hỗ trợ trực tuyến giữa các buổi</li></ul>
-          <a class="button button-secondary" href="contact.html">Chọn gói này</a>
-        </article>
+      <div class="container pricing-grid" data-pricing-grid aria-live="polite">
+        <p class="pricing-status" role="status">Đang tải các gói tập...</p>
       </div>
       <div class="container note-box">Các mức giá trên là nội dung minh họa và đã bao gồm phí đánh giá ban đầu. Liên hệ FORGEFIT để nhận tư vấn lộ trình và ưu đãi hiện hành.</div>
     </section>

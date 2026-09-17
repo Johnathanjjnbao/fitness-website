@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../assets/js/supabase-client.js" defer></script>
+  <script src="../assets/js/pricing.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
 </head>
 <body>
@@ -33,29 +34,8 @@
     </section>
 
     <section class="section">
-      <div class="container pricing-grid">
-        <article class="price-card">
-          <h2>시작</h2>
-          <div class="price">3,600,000₫</div>
-          <span class="price-unit">4회 · 30일 이내 사용</span>
-          <ul class="feature-list"><li>초기 체력 평가</li><li>1:1 트레이닝 4회</li><li>기초 맞춤 운동 계획</li><li>기본 자세 지도</li></ul>
-          <a class="button button-secondary" href="contact.html">이용권 선택</a>
-        </article>
-        <article class="price-card featured">
-          <span class="popular-label">가장 인기 있는 선택</span>
-          <h2>도약</h2>
-          <div class="price">9,600,000₫</div>
-          <span class="price-unit">12회 · 8주 이내 사용</span>
-          <ul class="feature-list"><li>세부 체력 및 신체 지표 평가</li><li>1:1 트레이닝 12회</li><li>주별 맞춤 계획 업데이트</li><li>기초 영양 가이드</li><li>중간 변화 리포트</li></ul>
-          <a class="button button-primary" href="contact.html">이용권 선택</a>
-        </article>
-        <article class="price-card">
-          <h2>변화</h2>
-          <div class="price">17,400,000₫</div>
-          <span class="price-unit">24회 · 16주 이내 사용</span>
-          <ul class="feature-list"><li>도약 이용권의 모든 혜택</li><li>1:1 트레이닝 24회</li><li>주간 생활 습관 점검</li><li>종합 재평가 2회</li><li>세션 사이 온라인 상담</li></ul>
-          <a class="button button-secondary" href="contact.html">이용권 선택</a>
-        </article>
+      <div class="container pricing-grid" data-pricing-grid aria-live="polite">
+        <p class="pricing-status" role="status">이용권을 불러오는 중입니다...</p>
       </div>
       <div class="container note-box">표시된 금액은 예시이며 초기 평가 비용이 포함되어 있습니다. 현재 혜택과 나에게 맞는 과정을 확인하려면 FORGEFIT에 문의해 주세요.</div>
     </section>

@@ -895,6 +895,23 @@ a {
   align-items: stretch;
 }
 
+.pricing-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  line-height: 1.7;
+  text-align: center;
+}
+
+.pricing-status.is-error {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  color: #e2e9e6;
+}
+
 .price-card {
   position: relative;
   display: flex;
