@@ -33,7 +33,7 @@
     const status = document.createElement("p");
     status.className = `pricing-status${isError ? " is-error" : ""}`;
     status.setAttribute("role", isError ? "alert" : "status");
-    status.textContent = message;
+    status.textContent = message.replaceAll("FORGEFIT", window.forgefitBrandName || "FORGEFIT");
     grid.replaceChildren(status);
   }
 

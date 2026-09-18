@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (formStatus) {
-        formStatus.textContent = messages.success;
+        formStatus.textContent = messages.success.replaceAll("FORGEFIT", window.forgefitBrandName || "FORGEFIT");
         formStatus.className = "form-status is-success";
       }
       contactForm.reset();
