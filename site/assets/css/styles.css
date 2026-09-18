@@ -1248,7 +1248,7 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .pricing-grid .price-card:last-child {
+  .pricing-grid .price-card:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
 
@@ -1414,7 +1414,7 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .pricing-grid .price-card:last-child {
+  .pricing-grid .price-card:last-child:nth-child(odd) {
     grid-column: auto;
   }
 
