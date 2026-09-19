@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quản trị | FORGEFIT</title>
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/js/supabase-client.js" defer></script>
+  <script src="../assets/js/admin-auth.js" defer></script>
+</head>
+<body class="admin-page" data-admin-page="dashboard">
+  <header class="admin-header">
+    <a class="brand" href="../index.html" aria-label="FORGEFIT - Trang chủ">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>FORGE<span class="brand-slash">//</span>FIT</span>
+    </a>
+    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+  </header>
+
+  <main class="admin-dashboard-shell">
+    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+
+    <section class="admin-dashboard" data-admin-content hidden aria-labelledby="admin-dashboard-title">
+      <p class="eyebrow">FORGEFIT Admin</p>
+      <h1 id="admin-dashboard-title">Khu vực quản trị</h1>
+      <p class="admin-intro">Đã đăng nhập với <strong data-admin-email></strong>.</p>
+
+      <div class="admin-placeholder">
+        <h2>Quản trị nội dung sẽ được bổ sung sau</h2>
+        <p>Bước này chỉ thiết lập đăng nhập, kiểm tra session và đăng xuất. Chưa có chức năng sửa Programs, Trainers hoặc Site Settings.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

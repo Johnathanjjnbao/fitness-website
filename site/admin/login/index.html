@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Đăng nhập quản trị | FORGEFIT</title>
+  <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../../assets/js/supabase-client.js" defer></script>
+  <script src="../../assets/js/admin-auth.js" defer></script>
+</head>
+<body class="admin-page" data-admin-page="login">
+  <main class="admin-auth-shell">
+    <a class="brand admin-brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>FORGE<span class="brand-slash">//</span>FIT</span>
+    </a>
+
+    <section class="admin-card" aria-labelledby="admin-login-title">
+      <p class="eyebrow">Khu vực quản trị</p>
+      <h1 id="admin-login-title">Đăng nhập Admin</h1>
+      <p class="admin-intro">Sử dụng tài khoản quản trị đã được cấp quyền trong Supabase.</p>
+
+      <form class="admin-login-form" data-admin-login-form novalidate>
+        <div class="form-group">
+          <label for="admin-email">Email</label>
+          <input id="admin-email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-password">Mật khẩu</label>
+          <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="button button-primary admin-submit" type="submit">Đăng nhập</button>
+        <p class="admin-status" data-admin-status aria-live="polite"></p>
+      </form>
+
+      <a class="admin-back-link" href="../../index.html">← Trở về website</a>
+    </section>
+  </main>
+</body>
+</html>

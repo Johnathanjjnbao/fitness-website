@@ -11,6 +11,7 @@ const expectedPages = [
   "contact.html",
 ];
 const localizedDirectories = ["", "ko"];
+const adminPages = ["admin/index.html", "admin/login/index.html"];
 const errors = [];
 
 for (const directory of localizedDirectories) {
@@ -50,6 +51,29 @@ for (const directory of localizedDirectories) {
         errors.push(`${relativePage}: không tìm thấy ${reference}`);
       }
     }
+  }
+}
+
+for (const relativePage of adminPages) {
+  const filePath = path.join(siteDir, relativePage);
+  if (!fs.existsSync(filePath)) {
+    errors.push(`Thiếu trang: ${relativePage}`);
+    continue;
+  }
+
+  const html = fs.readFileSync(filePath, "utf8");
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
+  if (duplicateIds.length) {
+    errors.push(`${relativePage}: ID bị trùng (${[...new Set(duplicateIds)].join(", ")})`);
+  }
+
+  const references = [...html.matchAll(/\s(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
+  for (const reference of references) {
+    if (/^(?:https?:|mailto:|tel:|#|data:)/.test(reference)) continue;
+    const cleanReference = reference.split(/[?#]/)[0];
+    const resolved = path.resolve(path.dirname(filePath), cleanReference);
+    if (!fs.existsSync(resolved)) errors.push(`${relativePage}: không tìm thấy ${reference}`);
   }
 }
 
