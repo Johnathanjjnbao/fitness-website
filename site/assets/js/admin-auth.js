@@ -95,7 +95,8 @@
     const loading = document.querySelector("[data-admin-loading]");
     const content = document.querySelector("[data-admin-content]");
     const logoutButton = document.querySelector("[data-admin-logout]");
-    const loginPath = page === "programs" ? "../login/" : "login/";
+    const nestedAdminPage = page === "programs" || page === "trainers";
+    const loginPath = nestedAdminPage ? "../login/" : "login/";
     let verifiedUser = null;
 
     try {
@@ -150,7 +151,9 @@
       await prepareLoginPage();
       return null;
     }
-    if (page === "dashboard" || page === "programs") return prepareProtectedPage();
+    if (page === "dashboard" || page === "programs" || page === "trainers") {
+      return prepareProtectedPage();
+    }
     return null;
   }
 

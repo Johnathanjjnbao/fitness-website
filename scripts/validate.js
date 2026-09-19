@@ -11,7 +11,12 @@ const expectedPages = [
   "contact.html",
 ];
 const localizedDirectories = ["", "ko"];
-const adminPages = ["admin/index.html", "admin/login/index.html", "admin/programs/index.html"];
+const adminPages = [
+  "admin/index.html",
+  "admin/login/index.html",
+  "admin/programs/index.html",
+  "admin/trainers/index.html",
+];
 const errors = [];
 
 for (const directory of localizedDirectories) {

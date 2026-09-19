@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quản lý Trainers | FORGEFIT</title>
+  <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../../assets/js/supabase-client.js" defer></script>
+  <script src="../../assets/js/admin-auth.js" defer></script>
+  <script src="../../assets/js/admin-trainers.js" defer></script>
+</head>
+<body class="admin-page" data-admin-page="trainers">
+  <header class="admin-header">
+    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>FORGE<span class="brand-slash">//</span>FIT</span>
+    </a>
+    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+  </header>
+
+  <main class="admin-workspace-shell">
+    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+
+    <section class="admin-workspace" data-admin-content hidden aria-labelledby="admin-trainers-title">
+      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị">
+        <a href="../">Dashboard</a>
+        <span aria-hidden="true">/</span>
+        <span>Trainers</span>
+      </nav>
+
+      <div class="admin-workspace-heading">
+        <div>
+          <p class="eyebrow">FORGEFIT Admin</p>
+          <h1 id="admin-trainers-title">Trainers</h1>
+          <p class="admin-intro">Quản lý hồ sơ tiếng Việt, tiếng Hàn và ảnh huấn luyện viên.</p>
+        </div>
+        <p class="admin-user-line">Đăng nhập: <strong data-admin-email></strong></p>
+      </div>
+
+      <div class="admin-trainer-layout">
+        <section class="admin-panel" aria-labelledby="trainer-list-title">
+          <div class="admin-panel-heading">
+            <div>
+              <p class="eyebrow">Danh sách</p>
+              <h2 id="trainer-list-title">Huấn luyện viên</h2>
+            </div>
+            <button class="button button-primary admin-small-button" type="button" data-trainer-new>Thêm trainer</button>
+          </div>
+          <p class="admin-list-status" data-trainer-list-status role="status">Đang tải dữ liệu…</p>
+          <div class="admin-trainer-list" data-trainer-list></div>
+        </section>
+
+        <section class="admin-panel" aria-labelledby="trainer-form-title">
+          <div class="admin-panel-heading">
+            <div>
+              <p class="eyebrow">Biểu mẫu</p>
+              <h2 id="trainer-form-title" data-trainer-form-title>Thêm trainer</h2>
+            </div>
+          </div>
+
+          <form class="admin-trainer-form" data-trainer-form novalidate>
+            <input name="id" type="hidden">
+            <input name="image_url" type="hidden">
+
+            <div class="admin-form-grid">
+              <div class="form-group">
+                <label for="trainer-name-vi">Tên tiếng Việt</label>
+                <input id="trainer-name-vi" name="name_vi" type="text" required>
+              </div>
+              <div class="form-group">
+                <label for="trainer-name-ko">Tên tiếng Hàn</label>
+                <input id="trainer-name-ko" name="name_ko" type="text" required>
+              </div>
+              <div class="form-group">
+                <label for="trainer-title-vi">Chức danh tiếng Việt</label>
+                <input id="trainer-title-vi" name="title_vi" type="text" required>
+              </div>
+              <div class="form-group">
+                <label for="trainer-title-ko">Chức danh tiếng Hàn</label>
+                <input id="trainer-title-ko" name="title_ko" type="text" required>
+              </div>
+              <div class="form-group">
+                <label for="trainer-bio-vi">Giới thiệu tiếng Việt</label>
+                <textarea id="trainer-bio-vi" name="bio_vi" rows="4" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="trainer-bio-ko">Giới thiệu tiếng Hàn</label>
+                <textarea id="trainer-bio-ko" name="bio_ko" rows="4" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="trainer-credentials-vi">Credentials tiếng Việt</label>
+                <textarea id="trainer-credentials-vi" name="credentials_vi" rows="5" aria-describedby="trainer-credentials-vi-help"></textarea>
+                <small id="trainer-credentials-vi-help">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
+              </div>
+              <div class="form-group">
+                <label for="trainer-credentials-ko">Credentials tiếng Hàn</label>
+                <textarea id="trainer-credentials-ko" name="credentials_ko" rows="5" aria-describedby="trainer-credentials-ko-help"></textarea>
+                <small id="trainer-credentials-ko-help">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
+              </div>
+              <div class="form-group">
+                <label for="trainer-order">Thứ tự hiển thị</label>
+                <input id="trainer-order" name="display_order" type="number" min="1" step="1" inputmode="numeric" required>
+              </div>
+              <div class="form-group">
+                <label for="trainer-image-position">Vị trí ảnh (%)</label>
+                <input id="trainer-image-position" name="image_position_percent" type="number" min="0" max="100" step="1" inputmode="numeric" value="50" required>
+                <small>0 là mép trái, 50 là giữa, 100 là mép phải.</small>
+              </div>
+            </div>
+
+            <div class="admin-image-field">
+              <div>
+                <label for="trainer-image">Ảnh trainer</label>
+                <input id="trainer-image" name="image" type="file" accept="image/*" aria-describedby="trainer-image-help">
+                <small id="trainer-image-help">Mỗi lần chọn ảnh sẽ tạo một filename mới để tránh cache.</small>
+              </div>
+              <img class="admin-trainer-preview" data-trainer-preview src="../../assets/images/trainer-team.png" alt="Xem trước ảnh trainer">
+            </div>
+
+            <label class="admin-checkbox">
+              <input name="active" type="checkbox" checked>
+              <span>Hiển thị trainer này trên website</span>
+            </label>
+
+            <p class="admin-status" data-trainer-form-status aria-live="polite"></p>
+
+            <div class="admin-form-actions">
+              <button class="button button-primary admin-save-button" type="submit">Lưu trainer</button>
+              <button class="button button-secondary admin-cancel-button" type="button" data-trainer-cancel hidden>Hủy chỉnh sửa</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
