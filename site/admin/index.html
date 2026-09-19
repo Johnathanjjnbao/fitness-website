@@ -29,10 +29,23 @@
       <h1 id="admin-dashboard-title">Khu vực quản trị</h1>
       <p class="admin-intro">Đã đăng nhập với <strong data-admin-email></strong>.</p>
 
-      <div class="admin-placeholder">
-        <h2>Quản trị nội dung sẽ được bổ sung sau</h2>
-        <p>Bước này chỉ thiết lập đăng nhập, kiểm tra session và đăng xuất. Chưa có chức năng sửa Programs, Trainers hoặc Site Settings.</p>
-      </div>
+      <nav class="admin-module-grid" aria-label="Chức năng quản trị">
+        <a class="admin-module-card is-active" href="programs/">
+          <span class="eyebrow">Đang hoạt động</span>
+          <strong>Programs</strong>
+          <span>Quản lý gói tập, giá, quyền lợi và trạng thái hiển thị.</span>
+        </a>
+        <div class="admin-module-card is-disabled" aria-disabled="true">
+          <span class="eyebrow">Sắp có</span>
+          <strong>Trainers</strong>
+          <span>Module huấn luyện viên chưa được mở trong bước này.</span>
+        </div>
+        <div class="admin-module-card is-disabled" aria-disabled="true">
+          <span class="eyebrow">Sắp có</span>
+          <strong>Site Settings</strong>
+          <span>Module thông tin chung chưa được mở trong bước này.</span>
+        </div>
+      </nav>
     </section>
   </main>
 </body>

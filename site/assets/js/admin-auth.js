@@ -91,27 +91,30 @@
     });
   }
 
-  async function prepareDashboard() {
+  async function prepareProtectedPage() {
     const loading = document.querySelector("[data-admin-loading]");
     const content = document.querySelector("[data-admin-content]");
     const logoutButton = document.querySelector("[data-admin-logout]");
+    const loginPath = page === "programs" ? "../login/" : "login/";
+    let verifiedUser = null;
 
     try {
       const access = await getAdminAccess();
       if (!access.user) {
-        window.location.replace("login/?error=session-required");
-        return;
+        window.location.replace(`${loginPath}?error=session-required`);
+        return null;
       }
       if (!access.isAdmin) {
         await signOutLocally();
-        window.location.replace("login/?error=not-authorized");
-        return;
+        window.location.replace(`${loginPath}?error=not-authorized`);
+        return null;
       }
 
       const email = document.querySelector("[data-admin-email]");
       if (email) email.textContent = access.user.email || "tài khoản quản trị";
       if (loading) loading.hidden = true;
       if (content) content.hidden = false;
+      verifiedUser = access.user;
     } catch (error) {
       console.warn("FORGEFIT admin session could not be verified.", error);
       try {
@@ -119,31 +122,37 @@
       } catch (signOutError) {
         console.warn("FORGEFIT admin session could not be cleared.", signOutError);
       }
-      window.location.replace("login/?error=session-required");
-      return;
+      window.location.replace(`${loginPath}?error=session-required`);
+      return null;
     }
 
     logoutButton?.addEventListener("click", async () => {
       logoutButton.disabled = true;
       try {
         await signOutLocally();
-        window.location.replace("login/");
+        window.location.replace(loginPath);
       } catch (error) {
         console.warn("FORGEFIT admin logout could not be completed.", error);
         logoutButton.disabled = false;
       }
     });
+
+    return verifiedUser;
   }
 
   async function start() {
     if (!client) {
       setStatus("Không thể kết nối hệ thống đăng nhập. Vui lòng tải lại trang.");
-      return;
+      return null;
     }
 
-    if (page === "login") await prepareLoginPage();
-    if (page === "dashboard") await prepareDashboard();
+    if (page === "login") {
+      await prepareLoginPage();
+      return null;
+    }
+    if (page === "dashboard" || page === "programs") return prepareProtectedPage();
+    return null;
   }
 
-  start();
+  window.forgefitAdminReady = start();
 })();

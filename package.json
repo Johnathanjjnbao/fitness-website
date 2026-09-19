@@ -5,6 +5,6 @@
   "description": "Website doanh nghiệp Fitness & Personal Training nhiều trang bằng HTML, CSS và JavaScript thuần.",
   "scripts": {
     "build": "node scripts/build.js",
-    "test": "node --check site/assets/js/main.js && node --check site/assets/js/supabase-client.js && node --check site/assets/js/pricing.js && node --check site/assets/js/site-settings.js && node --check site/assets/js/trainers.js && node --check site/assets/js/admin-auth.js && node scripts/validate.js"
+    "test": "node --check site/assets/js/main.js && node --check site/assets/js/supabase-client.js && node --check site/assets/js/pricing.js && node --check site/assets/js/site-settings.js && node --check site/assets/js/trainers.js && node --check site/assets/js/admin-auth.js && node --check site/assets/js/admin-programs.js && node scripts/validate.js"
   }
 }
