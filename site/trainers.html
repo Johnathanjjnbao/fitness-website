@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/supabase-client.js" defer></script>
   <script src="assets/js/site-settings.js" defer></script>
+  <script src="assets/js/trainers.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
@@ -34,34 +35,8 @@
     </section>
 
     <section class="section">
-      <div class="container trainer-grid">
-        <article class="trainer-card">
-          <img class="trainer-photo" src="assets/images/trainer-team.png" alt="Huấn luyện viên Trần Minh Anh" width="1536" height="1024">
-          <div class="trainer-info">
-            <h2>Trần Minh Anh</h2>
-            <span class="trainer-role">Head Coach · Strength</span>
-            <p>Chuyên xây dựng nền tảng sức mạnh và kỹ thuật tập tạ cho người mới.</p>
-            <div class="credentials"><span>NASM-CPT</span><span>Strength Coach</span><span>6 năm kinh nghiệm</span></div>
-          </div>
-        </article>
-        <article class="trainer-card">
-          <img class="trainer-photo" src="assets/images/trainer-team.png" alt="Huấn luyện viên Nguyễn Hoàng Nam" width="1536" height="1024">
-          <div class="trainer-info">
-            <h2>Nguyễn Hoàng Nam</h2>
-            <span class="trainer-role">Performance Coach</span>
-            <p>Hỗ trợ học viên tăng hiệu suất, sức bền và khả năng vận động toàn diện.</p>
-            <div class="credentials"><span>ACE-CPT</span><span>Sports Performance</span><span>8 năm kinh nghiệm</span></div>
-          </div>
-        </article>
-        <article class="trainer-card">
-          <img class="trainer-photo" src="assets/images/trainer-team.png" alt="Huấn luyện viên Lê Thảo Vy" width="1536" height="1024">
-          <div class="trainer-info">
-            <h2>Lê Thảo Vy</h2>
-            <span class="trainer-role">Mobility · Body Composition</span>
-            <p>Đồng hành cùng dân văn phòng cải thiện chuyển động và xây dựng hình thể khỏe khoắn.</p>
-            <div class="credentials"><span>ISSA-CPT</span><span>Mobility Specialist</span><span>5 năm kinh nghiệm</span></div>
-          </div>
-        </article>
+      <div class="container trainer-grid" data-trainer-grid aria-live="polite">
+        <p class="trainer-status" role="status">Đang tải đội ngũ huấn luyện viên...</p>
       </div>
     </section>
 

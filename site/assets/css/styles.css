@@ -833,18 +833,6 @@ a {
   transition: filter 0.25s ease, transform 0.35s ease;
 }
 
-.trainer-card:first-child .trainer-photo {
-  object-position: 16% center;
-}
-
-.trainer-card:nth-child(2) .trainer-photo {
-  object-position: 50% center;
-}
-
-.trainer-card:nth-child(3) .trainer-photo {
-  object-position: 86% center;
-}
-
 .trainer-card:hover .trainer-photo {
   filter: saturate(1) contrast(1.02);
   transform: scale(1.025);
@@ -895,7 +883,8 @@ a {
   align-items: stretch;
 }
 
-.pricing-status {
+.pricing-status,
+.trainer-status {
   grid-column: 1 / -1;
   margin: 0;
   padding: 28px;
@@ -907,7 +896,8 @@ a {
   text-align: center;
 }
 
-.pricing-status.is-error {
+.pricing-status.is-error,
+.trainer-status.is-error {
   border-color: rgba(var(--accent-rgb), 0.55);
   color: #e2e9e6;
 }
