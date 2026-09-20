@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Site Settings | FORGEFIT</title>
+  <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../../assets/js/supabase-client.js" defer></script>
+  <script src="../../assets/js/admin-auth.js" defer></script>
+  <script src="../../assets/js/admin-site-settings.js" defer></script>
+</head>
+<body class="admin-page" data-admin-page="site-settings">
+  <header class="admin-header">
+    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>FORGE<span class="brand-slash">//</span>FIT</span>
+    </a>
+    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+  </header>
+
+  <main class="admin-workspace-shell">
+    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+
+    <section class="admin-workspace" data-admin-content hidden aria-labelledby="admin-settings-title">
+      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị">
+        <a href="../">Dashboard</a>
+        <span aria-hidden="true">/</span>
+        <span>Site Settings</span>
+      </nav>
+
+      <div class="admin-workspace-heading">
+        <div>
+          <p class="eyebrow">FORGEFIT Admin</p>
+          <h1 id="admin-settings-title">Site Settings</h1>
+          <p class="admin-intro">Quản lý ảnh lớn hiển thị trên trang chủ.</p>
+        </div>
+        <p class="admin-user-line">Đăng nhập: <strong data-admin-email></strong></p>
+      </div>
+
+      <section class="admin-panel admin-settings-panel" aria-labelledby="homepage-image-title">
+        <div class="admin-panel-heading">
+          <div>
+            <p class="eyebrow">Trang chủ</p>
+            <h2 id="homepage-image-title">Ảnh trang chủ</h2>
+          </div>
+        </div>
+
+        <form data-homepage-image-form novalidate>
+          <input name="homepage_image_url" type="hidden">
+
+          <img
+            class="admin-homepage-preview"
+            data-homepage-image-preview
+            src="../../assets/images/trainer-team.png"
+            alt="Xem trước ảnh trang chủ"
+          >
+
+          <div class="admin-image-field">
+            <div>
+              <label for="homepage-image-file">Chọn ảnh mới</label>
+              <input id="homepage-image-file" name="image" type="file" accept="image/*" aria-describedby="homepage-image-help">
+              <small id="homepage-image-help">Ảnh mới sẽ được lưu bằng filename riêng để website không dùng nhầm ảnh cũ trong cache.</small>
+              <small class="admin-settings-path">Đường dẫn hiện tại: <strong data-homepage-image-path>Đang tải…</strong></small>
+            </div>
+          </div>
+
+          <div class="admin-position-control">
+            <div class="form-group">
+              <label for="homepage-image-position">Vị trí ảnh (%)</label>
+              <input
+                id="homepage-image-position"
+                name="homepage_image_position_percent"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+              >
+              <small>0 là mép trái, 50 là giữa, 100 là mép phải.</small>
+            </div>
+            <div class="form-group">
+              <label for="homepage-image-position-number">Giá trị</label>
+              <input
+                id="homepage-image-position-number"
+                name="homepage_image_position_number"
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                inputmode="numeric"
+                value="50"
+                required
+              >
+            </div>
+          </div>
+
+          <p class="admin-status" data-homepage-image-status aria-live="polite"></p>
+
+          <div class="admin-form-actions">
+            <button class="button button-primary admin-save-button" type="submit">Lưu ảnh trang chủ</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

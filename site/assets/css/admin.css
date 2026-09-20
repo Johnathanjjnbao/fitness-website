@@ -405,6 +405,30 @@
   height: 140px;
 }
 
+.admin-settings-panel {
+  max-width: 920px;
+}
+
+.admin-homepage-preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  background: #dfe5e2;
+  object-fit: cover;
+}
+
+.admin-settings-path {
+  overflow-wrap: anywhere;
+}
+
+.admin-position-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  align-items: end;
+  gap: 16px;
+}
+
 .admin-text-button {
   padding: 7px 0;
   border: 0;
@@ -475,7 +499,8 @@
 
   .admin-module-grid,
   .admin-form-grid,
-  .admin-image-field {
+  .admin-image-field,
+  .admin-position-control {
     grid-template-columns: 1fr;
   }
 

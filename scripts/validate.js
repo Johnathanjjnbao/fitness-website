@@ -16,6 +16,7 @@ const adminPages = [
   "admin/login/index.html",
   "admin/programs/index.html",
   "admin/trainers/index.html",
+  "admin/site-settings/index.html",
 ];
 const errors = [];
 
