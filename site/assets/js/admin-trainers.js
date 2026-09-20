@@ -1,6 +1,8 @@
 (() => {
   const client = window.forgefitSupabase;
   const adminReady = window.forgefitAdminReady;
+  const i18n = window.forgefitAdminI18n;
+  const t = (key, values) => i18n?.t(key, values) || key;
   const TRAINER_IMAGE_BUCKET = "trainer-images";
   const TRAINER_IMAGE_FOLDER = "team";
   const scriptUrl = document.currentScript?.src;
@@ -24,6 +26,7 @@
   ].join(", ");
   const trainersById = new Map();
   let previewObjectUrl = null;
+  let translationController = null;
 
   function setListStatus(message, isError = false) {
     const status = document.querySelector("[data-trainer-list-status]");
@@ -144,7 +147,7 @@
 
     const image = document.createElement("img");
     image.className = "admin-trainer-thumbnail";
-    image.alt = `Ảnh ${trainer.name_vi}`;
+    image.alt = `${t("trainerImage")} ${trainer.name_vi}`;
     image.width = 88;
     image.height = 88;
     image.loading = "lazy";
@@ -162,7 +165,7 @@
 
     const state = document.createElement("span");
     state.className = `admin-state${trainer.active ? " is-active" : ""}`;
-    state.textContent = trainer.active ? "Đang hiển thị" : "Đang ẩn";
+    state.textContent = t(trainer.active ? "visible" : "hidden");
     heading.append(title, state);
 
     const koreanName = document.createElement("p");
@@ -171,14 +174,14 @@
 
     const meta = document.createElement("p");
     meta.className = "admin-program-meta";
-    meta.textContent = `${trainer.title_vi} · Thứ tự ${trainer.display_order}`;
+    meta.textContent = `${trainer.title_vi} · ${t("orderMeta", { order: trainer.display_order })}`;
 
     const actions = document.createElement("div");
     actions.className = "admin-trainer-actions";
     actions.append(
-      makeButton("Sửa", "admin-text-button", "edit", trainer.id),
-      makeButton(trainer.active ? "Ẩn" : "Hiện", "admin-text-button", "toggle", trainer.id),
-      makeButton("Xóa", "admin-text-button is-danger", "delete", trainer.id),
+      makeButton(t("edit"), "admin-text-button", "edit", trainer.id),
+      makeButton(t(trainer.active ? "hide" : "show"), "admin-text-button", "toggle", trainer.id),
+      makeButton(t("delete"), "admin-text-button is-danger", "delete", trainer.id),
     );
 
     content.append(heading, koreanName, meta, actions);
@@ -195,16 +198,16 @@
 
     if (!trainers.length) {
       list.replaceChildren();
-      setListStatus("Chưa có trainer nào. Hãy thêm trainer đầu tiên.");
+      setListStatus(t("noTrainers"));
       return;
     }
 
     list.replaceChildren(...trainers.map(createTrainerItem));
-    setListStatus(`${trainers.length} trainer`);
+    setListStatus(t("trainerCount", { count: trainers.length }));
   }
 
   async function loadTrainers() {
-    setListStatus("Đang tải dữ liệu…");
+    setListStatus(t("loadingData"));
     const { data, error } = await client
       .from("trainers")
       .select(trainerFields)
@@ -224,10 +227,11 @@
     form.elements.image_url.value = "";
     form.elements.active.checked = true;
     form.elements.image_position_percent.value = "50";
-    document.querySelector("[data-trainer-form-title]").textContent = "Thêm trainer";
+    document.querySelector("[data-trainer-form-title]").textContent = t("addTrainer");
     document.querySelector("[data-trainer-cancel]").hidden = true;
     setFormStatus("");
     updatePreview();
+    translationController?.resetBaselines();
   }
 
   function editTrainer(id) {
@@ -250,10 +254,11 @@
     form.elements.display_order.value = trainer.display_order;
     form.elements.active.checked = trainer.active;
 
-    document.querySelector("[data-trainer-form-title]").textContent = `Sửa: ${trainer.name_vi}`;
+    document.querySelector("[data-trainer-form-title]").textContent = t("editItem", { name: trainer.name_vi });
     document.querySelector("[data-trainer-cancel]").hidden = false;
     setFormStatus("");
     updatePreview(trainer.image_url);
+    translationController?.resetBaselines();
     form.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -266,13 +271,13 @@
     const imagePosition = Number(form.elements.image_position_percent.value);
 
     if (textFields.some((field) => !values[field])) {
-      throw new Error("Vui lòng nhập đủ tên, chức danh và giới thiệu bằng cả hai ngôn ngữ.");
+      throw new Error(t("requiredTrainerLanguages"));
     }
     if (!Number.isSafeInteger(displayOrder) || displayOrder < 1) {
-      throw new Error("Thứ tự hiển thị phải là số nguyên từ 1 trở lên.");
+      throw new Error(t("invalidOrder"));
     }
     if (!Number.isSafeInteger(imagePosition) || imagePosition < 0 || imagePosition > 100) {
-      throw new Error("Vị trí ảnh phải là số nguyên từ 0 đến 100.");
+      throw new Error(t("invalidImagePosition"));
     }
 
     return {
@@ -303,7 +308,7 @@
 
   async function uploadTrainerImage(file) {
     if (!file.type.startsWith("image/")) {
-      throw new Error("File đã chọn không phải là ảnh.");
+      throw new Error(t("imageNotValid"));
     }
 
     const uniqueId = typeof crypto.randomUUID === "function"
@@ -323,11 +328,11 @@
   }
 
   function friendlyError(error) {
-    if (error?.code === "23514") return "Dữ liệu chưa đúng điều kiện của hệ thống.";
+    if (error?.code === "23514") return t("invalidData");
     if (error?.statusCode === "403" || error?.status === 403) {
-      return "Tài khoản hiện tại không có quyền thực hiện thao tác này.";
+      return t("noPermission");
     }
-    return error?.message || "Không thể lưu thay đổi. Vui lòng thử lại.";
+    return error?.message || t("saveFailed");
   }
 
   async function saveTrainer(event) {
@@ -336,16 +341,16 @@
     const submitButton = form.querySelector('button[type="submit"]');
 
     submitButton.disabled = true;
-    setFormStatus("Đang lưu…", true);
+    setFormStatus(t("saving"), true);
 
     try {
       const payload = getTrainerPayload(form);
       const imageFile = form.elements.image.files[0];
       if (imageFile) {
-        setFormStatus("Đang tải ảnh lên Storage…", true);
+        setFormStatus(t("uploadingImage"), true);
         payload.image_url = await uploadTrainerImage(imageFile);
       }
-      if (!payload.image_url) throw new Error("Vui lòng chọn ảnh cho trainer mới.");
+      if (!payload.image_url) throw new Error(t("imageNotSelected"));
 
       const id = form.elements.id.value;
       const query = id
@@ -356,7 +361,7 @@
 
       resetForm();
       await loadTrainers();
-      setFormStatus(id ? "Đã cập nhật trainer." : "Đã thêm trainer.", true);
+      setFormStatus(t(id ? "trainerUpdated" : "trainerAdded"), true);
     } catch (error) {
       console.warn("FORGEFIT admin trainer could not be saved.", error);
       setFormStatus(friendlyError(error));
@@ -373,13 +378,11 @@
 
     if (error) throw error;
     await loadTrainers();
-    setListStatus(trainer.active ? "Đã ẩn trainer." : "Đã hiển thị trainer.");
+    setListStatus(t(trainer.active ? "trainerHidden" : "trainerShown"));
   }
 
   async function deleteTrainer(trainer) {
-    const confirmed = window.confirm(
-      `Xóa trainer “${trainer.name_vi}”? Hồ sơ sẽ bị xóa nhưng file ảnh trong Storage vẫn được giữ lại.`,
-    );
+    const confirmed = window.confirm(t("deleteTrainerConfirm", { name: trainer.name_vi }));
     if (!confirmed) return;
 
     const { error } = await client.from("trainers").delete().eq("id", trainer.id);
@@ -387,7 +390,7 @@
 
     resetForm();
     await loadTrainers();
-    setListStatus("Đã xóa trainer.");
+    setListStatus(t("trainerDeleted"));
   }
 
   async function handleListAction(event) {
@@ -420,7 +423,7 @@
       return;
     }
     if (!file.type.startsWith("image/")) {
-      setFormStatus("File đã chọn không phải là ảnh.");
+      setFormStatus(t("imageNotValid"));
       event.currentTarget.value = "";
       updatePreview(event.currentTarget.form.elements.image_url.value);
       return;
@@ -435,6 +438,7 @@
     if (!user) return;
 
     const form = document.querySelector("[data-trainer-form]");
+    translationController = window.forgefitAdminTranslation?.setup(form) || null;
     form?.addEventListener("submit", saveTrainer);
     form?.elements.image.addEventListener("change", handleImageSelection);
     form?.elements.image_position_percent.addEventListener("input", () => {
@@ -451,7 +455,7 @@
       await loadTrainers();
     } catch (error) {
       console.warn("FORGEFIT admin trainers could not be loaded.", error);
-      setListStatus("Tạm thời chưa thể tải Trainers. Vui lòng thử lại.", true);
+      setListStatus(t("trainersLoadFailed"), true);
     }
   }
 

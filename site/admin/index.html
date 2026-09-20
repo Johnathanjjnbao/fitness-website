@@ -10,40 +10,44 @@
   <link rel="stylesheet" href="../assets/css/admin.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../assets/js/supabase-client.js" defer></script>
+  <script src="../assets/js/admin-i18n.js" defer></script>
   <script src="../assets/js/admin-auth.js" defer></script>
 </head>
-<body class="admin-page" data-admin-page="dashboard">
+<body class="admin-page" data-admin-page="dashboard" data-i18n-title="titleDashboard">
   <header class="admin-header">
-    <a class="brand" href="../index.html" aria-label="FORGEFIT - Trang chủ">
+    <a class="brand" href="../index.html" aria-label="FORGEFIT - Trang chủ" data-i18n-aria-label="homeAria">
       <span class="brand-mark" aria-hidden="true"></span>
       <span>FORGE<span class="brand-slash">//</span>FIT</span>
     </a>
-    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+    <div class="admin-header-actions">
+      <button class="admin-language-toggle" type="button" data-admin-language-toggle data-i18n="switchLanguage" data-i18n-aria-label="switchLanguageAria">한국어</button>
+      <button class="button button-secondary admin-logout" type="button" data-admin-logout data-i18n="logout">Đăng xuất</button>
+    </div>
   </header>
 
   <main class="admin-dashboard-shell">
-    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+    <p class="admin-loading" data-admin-loading role="status" data-i18n="checkingAccess">Đang kiểm tra quyền truy cập…</p>
 
     <section class="admin-dashboard" data-admin-content hidden aria-labelledby="admin-dashboard-title">
       <p class="eyebrow">FORGEFIT Admin</p>
-      <h1 id="admin-dashboard-title">Khu vực quản trị</h1>
-      <p class="admin-intro">Đã đăng nhập với <strong data-admin-email></strong>.</p>
+      <h1 id="admin-dashboard-title" data-i18n="adminDashboard">Khu vực quản trị</h1>
+      <p class="admin-intro"><span data-i18n="loggedInWith">Đã đăng nhập với</span> <strong data-admin-email></strong>.</p>
 
-      <nav class="admin-module-grid" aria-label="Chức năng quản trị">
+      <nav class="admin-module-grid" aria-label="Chức năng quản trị" data-i18n-aria-label="adminNavigation">
         <a class="admin-module-card is-active" href="programs/">
-          <span class="eyebrow">Đang hoạt động</span>
-          <strong>Programs</strong>
-          <span>Quản lý gói tập, giá, quyền lợi và trạng thái hiển thị.</span>
+          <span class="eyebrow" data-i18n="activeModule">Đang hoạt động</span>
+          <strong data-i18n="programs">Programs</strong>
+          <span data-i18n="programsModule">Quản lý gói tập, giá, quyền lợi và trạng thái hiển thị.</span>
         </a>
         <a class="admin-module-card is-active" href="trainers/">
-          <span class="eyebrow">Đang hoạt động</span>
-          <strong>Trainers</strong>
-          <span>Quản lý hồ sơ song ngữ, ảnh và trạng thái hiển thị của huấn luyện viên.</span>
+          <span class="eyebrow" data-i18n="activeModule">Đang hoạt động</span>
+          <strong data-i18n="trainers">Trainers</strong>
+          <span data-i18n="trainersModule">Quản lý hồ sơ song ngữ, ảnh và trạng thái hiển thị của huấn luyện viên.</span>
         </a>
         <a class="admin-module-card is-active" href="site-settings/">
-          <span class="eyebrow">Đang hoạt động</span>
-          <strong>Site Settings</strong>
-          <span>Quản lý ảnh trang chủ và vị trí hiển thị của ảnh.</span>
+          <span class="eyebrow" data-i18n="activeModule">Đang hoạt động</span>
+          <strong data-i18n="siteSettings">Site Settings</strong>
+          <span data-i18n="settingsModule">Quản lý ảnh trang chủ và vị trí hiển thị của ảnh.</span>
         </a>
       </nav>
     </section>

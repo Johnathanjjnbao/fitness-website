@@ -1,6 +1,8 @@
 (() => {
   const client = window.forgefitSupabase;
   const adminReady = window.forgefitAdminReady;
+  const i18n = window.forgefitAdminI18n;
+  const t = (key, values) => i18n?.t(key, values) || key;
   const programFields = [
     "id",
     "name_vi",
@@ -22,6 +24,7 @@
     maximumFractionDigits: 0,
   });
   const programsById = new Map();
+  let translationController = null;
 
   function setListStatus(message, isError = false) {
     const status = document.querySelector("[data-program-list-status]");
@@ -66,7 +69,7 @@
 
     const state = document.createElement("span");
     state.className = `admin-state${program.active ? " is-active" : ""}`;
-    state.textContent = program.active ? "Đang hiển thị" : "Đang ẩn";
+    state.textContent = t(program.active ? "visible" : "hidden");
     heading.append(title, state);
 
     const koreanName = document.createElement("p");
@@ -75,14 +78,14 @@
 
     const meta = document.createElement("p");
     meta.className = "admin-program-meta";
-    meta.textContent = `${priceFormatter.format(program.price_vnd)} · Thứ tự ${program.display_order}`;
+    meta.textContent = `${priceFormatter.format(program.price_vnd)} · ${t("orderMeta", { order: program.display_order })}`;
 
     const actions = document.createElement("div");
     actions.className = "admin-program-actions";
     actions.append(
-      makeButton("Sửa", "admin-text-button", "edit", program.id),
-      makeButton(program.active ? "Tắt hiển thị" : "Bật hiển thị", "admin-text-button", "toggle", program.id),
-      makeButton("Xóa", "admin-text-button is-danger", "delete", program.id),
+      makeButton(t("edit"), "admin-text-button", "edit", program.id),
+      makeButton(t(program.active ? "disableDisplay" : "enableDisplay"), "admin-text-button", "toggle", program.id),
+      makeButton(t("delete"), "admin-text-button is-danger", "delete", program.id),
     );
 
     item.append(heading, koreanName, meta, actions);
@@ -98,16 +101,16 @@
 
     if (!programs.length) {
       list.replaceChildren();
-      setListStatus("Chưa có gói tập nào. Hãy thêm gói đầu tiên.");
+      setListStatus(t("noPrograms"));
       return;
     }
 
     list.replaceChildren(...programs.map(createProgramItem));
-    setListStatus(`${programs.length} gói tập`);
+    setListStatus(t("programCount", { count: programs.length }));
   }
 
   async function loadPrograms() {
-    setListStatus("Đang tải dữ liệu…");
+    setListStatus(t("loadingData"));
     const { data, error } = await client
       .from("programs")
       .select(programFields)
@@ -124,9 +127,10 @@
     form.reset();
     form.elements.id.value = "";
     form.elements.active.checked = true;
-    document.querySelector("[data-program-form-title]").textContent = "Thêm gói tập";
+    document.querySelector("[data-program-form-title]").textContent = t("addProgram");
     document.querySelector("[data-program-cancel]").hidden = true;
     setFormStatus("");
+    translationController?.resetBaselines();
   }
 
   function editProgram(id) {
@@ -145,9 +149,10 @@
     form.elements.active.checked = program.active;
     form.elements.display_order.value = program.display_order;
 
-    document.querySelector("[data-program-form-title]").textContent = `Sửa: ${program.name_vi}`;
+    document.querySelector("[data-program-form-title]").textContent = t("editItem", { name: program.name_vi });
     document.querySelector("[data-program-cancel]").hidden = false;
     setFormStatus("");
+    translationController?.resetBaselines();
     form.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -160,13 +165,13 @@
     );
 
     if (textFields.some((field) => !values[field])) {
-      throw new Error("Vui lòng nhập đủ tên và mô tả bằng cả hai ngôn ngữ.");
+      throw new Error(t("requiredProgramLanguages"));
     }
     if (!Number.isSafeInteger(price) || price < 0) {
-      throw new Error("Giá phải là số nguyên VND từ 0 trở lên.");
+      throw new Error(t("invalidPrice"));
     }
     if (!Number.isSafeInteger(displayOrder) || displayOrder < 1) {
-      throw new Error("Thứ tự hiển thị phải là số nguyên từ 1 trở lên.");
+      throw new Error(t("invalidOrder"));
     }
 
     return {
@@ -180,9 +185,9 @@
   }
 
   function friendlyError(error) {
-    if (error?.code === "23505") return "Thứ tự hiển thị đã được dùng. Hãy chọn số khác.";
-    if (error?.code === "23514") return "Dữ liệu chưa đúng điều kiện của hệ thống.";
-    return error?.message || "Không thể lưu thay đổi. Vui lòng thử lại.";
+    if (error?.code === "23505") return t("duplicateOrder");
+    if (error?.code === "23514") return t("invalidData");
+    return error?.message || t("saveFailed");
   }
 
   async function saveProgram(event) {
@@ -191,7 +196,7 @@
     const submitButton = form.querySelector('button[type="submit"]');
 
     submitButton.disabled = true;
-    setFormStatus("Đang lưu…", true);
+    setFormStatus(t("saving"), true);
 
     try {
       const payload = getProgramPayload(form);
@@ -204,7 +209,7 @@
       if (error) throw error;
       resetForm();
       await loadPrograms();
-      setFormStatus(id ? "Đã cập nhật gói tập." : "Đã thêm gói tập.", true);
+      setFormStatus(t(id ? "programUpdated" : "programAdded"), true);
     } catch (error) {
       console.warn("FORGEFIT admin program could not be saved.", error);
       setFormStatus(friendlyError(error));
@@ -221,11 +226,11 @@
 
     if (error) throw error;
     await loadPrograms();
-    setListStatus(program.active ? "Đã tắt hiển thị gói tập." : "Đã bật hiển thị gói tập.");
+    setListStatus(t(program.active ? "programDisabled" : "programEnabled"));
   }
 
   async function deleteProgram(program) {
-    const confirmed = window.confirm(`Xóa gói “${program.name_vi}”? Thao tác này không thể hoàn tác.`);
+    const confirmed = window.confirm(t("deleteProgramConfirm", { name: program.name_vi }));
     if (!confirmed) return;
 
     const { error } = await client.from("programs").delete().eq("id", program.id);
@@ -233,7 +238,7 @@
 
     resetForm();
     await loadPrograms();
-    setListStatus("Đã xóa gói tập.");
+    setListStatus(t("programDeleted"));
   }
 
   async function handleListAction(event) {
@@ -265,6 +270,7 @@
     if (!user) return;
 
     const form = document.querySelector("[data-program-form]");
+    translationController = window.forgefitAdminTranslation?.setup(form) || null;
     form?.addEventListener("submit", saveProgram);
     document.querySelector("[data-program-list]")?.addEventListener("click", handleListAction);
     document.querySelector("[data-program-new]")?.addEventListener("click", resetForm);
@@ -274,7 +280,7 @@
       await loadPrograms();
     } catch (error) {
       console.warn("FORGEFIT admin programs could not be loaded.", error);
-      setListStatus("Tạm thời chưa thể tải Programs. Vui lòng thử lại.", true);
+      setListStatus(t("programsLoadFailed"), true);
     }
   }
 

@@ -1,0 +1,4 @@
+project_id = "fitness-website"
+
+[functions.translate-admin]
+verify_jwt = true

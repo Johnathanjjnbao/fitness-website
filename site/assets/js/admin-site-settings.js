@@ -1,6 +1,8 @@
 (() => {
   const client = window.forgefitSupabase;
   const adminReady = window.forgefitAdminReady;
+  const i18n = window.forgefitAdminI18n;
+  const t = (key, values) => i18n?.t(key, values) || key;
   const HOMEPAGE_IMAGE_BUCKET = "trainer-images";
   const HOMEPAGE_IMAGE_FOLDER = "homepage";
   const scriptUrl = document.currentScript?.src;
@@ -38,7 +40,7 @@
 
   function setPathLabel(path) {
     const label = document.querySelector("[data-homepage-image-path]");
-    if (label) label.textContent = storageObjectPath(path) || "Chưa có ảnh Storage";
+    if (label) label.textContent = storageObjectPath(path) || t("storageImageMissing");
   }
 
   function getStoragePublicUrl(value) {
@@ -121,7 +123,7 @@
   }
 
   async function uploadHomepageImage(file) {
-    if (!file.type.startsWith("image/")) throw new Error("File đã chọn không phải là ảnh.");
+    if (!file.type.startsWith("image/")) throw new Error(t("imageNotValid"));
 
     const uniqueId = typeof crypto.randomUUID === "function"
       ? crypto.randomUUID()
@@ -140,11 +142,11 @@
   }
 
   function friendlyError(error) {
-    if (error?.code === "23514") return "Vị trí ảnh phải nằm trong khoảng từ 0 đến 100.";
+    if (error?.code === "23514") return t("homepagePositionInvalid");
     if (error?.statusCode === "403" || error?.status === 403) {
-      return "Tài khoản hiện tại không có quyền thực hiện thao tác này.";
+      return t("noPermission");
     }
-    return error?.message || "Không thể lưu ảnh trang chủ. Vui lòng thử lại.";
+    return error?.message || t("homepageSaveFailed");
   }
 
   function fillForm(settings) {
@@ -163,7 +165,7 @@
   }
 
   async function loadSettings() {
-    setStatus("Đang tải ảnh hiện tại…", true);
+    setStatus(t("loadingCurrentImage"), true);
     const { data, error } = await client
       .from("site_settings")
       .select("homepage_image_url, homepage_image_position_percent")
@@ -182,21 +184,21 @@
     const position = Number(form.elements.homepage_image_position_number.value);
 
     if (!Number.isSafeInteger(position) || position < 0 || position > 100) {
-      setStatus("Vị trí ảnh phải là số nguyên từ 0 đến 100.");
+      setStatus(t("homepagePositionInvalid"));
       return;
     }
 
     submitButton.disabled = true;
-    setStatus("Đang lưu…", true);
+    setStatus(t("saving"), true);
 
     try {
       let imagePath = storageObjectPath(form.elements.homepage_image_url.value);
       const imageFile = form.elements.image.files[0];
       if (imageFile) {
-        setStatus("Đang tải ảnh mới lên Storage…", true);
+        setStatus(t("uploadingHomepageImage"), true);
         imagePath = await uploadHomepageImage(imageFile);
       }
-      if (!imagePath) throw new Error("Vui lòng chọn một ảnh trang chủ.");
+      if (!imagePath) throw new Error(t("chooseHomepageImage"));
 
       const { data, error } = await client
         .from("site_settings")
@@ -210,7 +212,7 @@
 
       if (error) throw error;
       fillForm(data);
-      setStatus("Đã cập nhật ảnh trang chủ. Website public sẽ dùng ảnh mới ngay.", true);
+      setStatus(t("homepageSaved"), true);
     } catch (error) {
       console.warn("FORGEFIT admin homepage image could not be saved.", error);
       setStatus(friendlyError(error));
@@ -226,7 +228,7 @@
       return;
     }
     if (!file.type.startsWith("image/")) {
-      setStatus("File đã chọn không phải là ảnh.");
+      setStatus(t("imageNotValid"));
       event.currentTarget.value = "";
       applyStoredImage(event.currentTarget.form.elements.homepage_image_url.value);
       return;
@@ -270,7 +272,7 @@
       await loadSettings();
     } catch (error) {
       console.warn("FORGEFIT admin site settings could not be loaded.", error);
-      setStatus("Tạm thời chưa thể tải ảnh trang chủ. Vui lòng thử lại.");
+      setStatus(t("settingsLoadFailed"));
       applyStoredImage("");
     }
   }

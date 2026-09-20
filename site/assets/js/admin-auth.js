@@ -1,6 +1,8 @@
 (() => {
   const client = window.forgefitSupabase;
   const page = document.body.dataset.adminPage;
+  const i18n = window.forgefitAdminI18n;
+  const t = (key, values) => i18n?.t(key, values) || key;
 
   function setStatus(message, success = false) {
     const status = document.querySelector("[data-admin-status]");
@@ -45,8 +47,8 @@
     }
 
     const queryError = new URLSearchParams(window.location.search).get("error");
-    if (queryError === "not-authorized") setStatus("Tài khoản này không có quyền quản trị.");
-    if (queryError === "session-required") setStatus("Vui lòng đăng nhập để tiếp tục.");
+    if (queryError === "not-authorized") setStatus(t("notAuthorized"));
+    if (queryError === "session-required") setStatus(t("sessionRequired"));
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -58,33 +60,33 @@
       const password = passwordInput.value;
 
       if (!email || !password) {
-        setStatus("Vui lòng nhập đầy đủ email và mật khẩu.");
+        setStatus(t("enterCredentials"));
         return;
       }
 
       submitButton.disabled = true;
-      setStatus("Đang đăng nhập…", true);
+      setStatus(t("loggingIn"), true);
 
       try {
         const { error: loginError } = await client.auth.signInWithPassword({ email, password });
         if (loginError) {
-          setStatus("Email hoặc mật khẩu không đúng.");
+          setStatus(t("invalidCredentials"));
           return;
         }
 
         const access = await getAdminAccess();
         if (!access.user || !access.isAdmin) {
           await signOutLocally();
-          setStatus("Tài khoản này không có quyền quản trị.");
+          setStatus(t("notAuthorized"));
           return;
         }
 
         passwordInput.value = "";
-        setStatus("Đăng nhập thành công. Đang chuyển trang…", true);
+        setStatus(t("loginSuccess"), true);
         window.location.replace("../");
       } catch (error) {
         console.warn("FORGEFIT admin login could not be completed.", error);
-        setStatus("Tạm thời chưa thể đăng nhập. Vui lòng thử lại.");
+        setStatus(t("loginUnavailable"));
       } finally {
         submitButton.disabled = false;
       }
@@ -112,7 +114,7 @@
       }
 
       const email = document.querySelector("[data-admin-email]");
-      if (email) email.textContent = access.user.email || "tài khoản quản trị";
+      if (email) email.textContent = access.user.email || t("adminAccount");
       if (loading) loading.hidden = true;
       if (content) content.hidden = false;
       verifiedUser = access.user;
@@ -143,7 +145,7 @@
 
   async function start() {
     if (!client) {
-      setStatus("Không thể kết nối hệ thống đăng nhập. Vui lòng tải lại trang.");
+      setStatus(t("authUnavailable"));
       return null;
     }
 

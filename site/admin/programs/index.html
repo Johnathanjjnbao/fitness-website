@@ -10,55 +10,60 @@
   <link rel="stylesheet" href="../../assets/css/admin.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../../assets/js/supabase-client.js" defer></script>
+  <script src="../../assets/js/admin-i18n.js" defer></script>
   <script src="../../assets/js/admin-auth.js" defer></script>
+  <script src="../../assets/js/admin-translation.js" defer></script>
   <script src="../../assets/js/admin-programs.js" defer></script>
 </head>
-<body class="admin-page" data-admin-page="programs">
+<body class="admin-page" data-admin-page="programs" data-i18n-title="titlePrograms">
   <header class="admin-header">
-    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ">
+    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ" data-i18n-aria-label="homeAria">
       <span class="brand-mark" aria-hidden="true"></span>
       <span>FORGE<span class="brand-slash">//</span>FIT</span>
     </a>
-    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+    <div class="admin-header-actions">
+      <button class="admin-language-toggle" type="button" data-admin-language-toggle data-i18n="switchLanguage" data-i18n-aria-label="switchLanguageAria">한국어</button>
+      <button class="button button-secondary admin-logout" type="button" data-admin-logout data-i18n="logout">Đăng xuất</button>
+    </div>
   </header>
 
   <main class="admin-workspace-shell">
-    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+    <p class="admin-loading" data-admin-loading role="status" data-i18n="checkingAccess">Đang kiểm tra quyền truy cập…</p>
 
     <section class="admin-workspace" data-admin-content hidden aria-labelledby="admin-programs-title">
-      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị">
-        <a href="../">Dashboard</a>
+      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị" data-i18n-aria-label="adminBreadcrumb">
+        <a href="../" data-i18n="dashboard">Dashboard</a>
         <span aria-hidden="true">/</span>
-        <span>Programs</span>
+        <span data-i18n="programs">Programs</span>
       </nav>
 
       <div class="admin-workspace-heading">
         <div>
           <p class="eyebrow">FORGEFIT Admin</p>
-          <h1 id="admin-programs-title">Programs</h1>
-          <p class="admin-intro">Quản lý nội dung bảng giá tiếng Việt và tiếng Hàn.</p>
+          <h1 id="admin-programs-title" data-i18n="programs">Programs</h1>
+          <p class="admin-intro" data-i18n="programsIntro">Quản lý nội dung bảng giá tiếng Việt và tiếng Hàn.</p>
         </div>
-        <p class="admin-user-line">Đăng nhập: <strong data-admin-email></strong></p>
+        <p class="admin-user-line"><span data-i18n="signedIn">Đăng nhập:</span> <strong data-admin-email></strong></p>
       </div>
 
       <div class="admin-program-layout">
         <section class="admin-panel" aria-labelledby="program-list-title">
           <div class="admin-panel-heading">
             <div>
-              <p class="eyebrow">Danh sách</p>
-              <h2 id="program-list-title">Các gói tập</h2>
+              <p class="eyebrow" data-i18n="list">Danh sách</p>
+              <h2 id="program-list-title" data-i18n="packages">Các gói tập</h2>
             </div>
-            <button class="button button-primary admin-small-button" type="button" data-program-new>Thêm gói</button>
+            <button class="button button-primary admin-small-button" type="button" data-program-new data-i18n="addPackage">Thêm gói</button>
           </div>
-          <p class="admin-list-status" data-program-list-status role="status">Đang tải dữ liệu…</p>
+          <p class="admin-list-status" data-program-list-status role="status" data-i18n="loadingData">Đang tải dữ liệu…</p>
           <div class="admin-program-list" data-program-list></div>
         </section>
 
         <section class="admin-panel" aria-labelledby="program-form-title">
           <div class="admin-panel-heading">
             <div>
-              <p class="eyebrow">Biểu mẫu</p>
-              <h2 id="program-form-title" data-program-form-title>Thêm gói tập</h2>
+              <p class="eyebrow" data-i18n="form">Biểu mẫu</p>
+              <h2 id="program-form-title" data-program-form-title data-i18n="addProgram">Thêm gói tập</h2>
             </div>
           </div>
 
@@ -67,51 +72,63 @@
 
             <div class="admin-form-grid">
               <div class="form-group">
-                <label for="program-name-vi">Tên tiếng Việt</label>
-                <input id="program-name-vi" name="name_vi" type="text" required>
+                <label for="program-name-vi" data-i18n="nameVi">Tên tiếng Việt</label>
+                <input id="program-name-vi" name="name_vi" type="text" data-translate-target="name_ko" required>
               </div>
               <div class="form-group">
-                <label for="program-name-ko">Tên tiếng Hàn</label>
+                <label for="program-name-ko" data-i18n="nameKo">Tên tiếng Hàn</label>
                 <input id="program-name-ko" name="name_ko" type="text" required>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="name_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="name_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="program-description-vi">Mô tả tiếng Việt</label>
-                <textarea id="program-description-vi" name="description_vi" rows="3" required></textarea>
+                <label for="program-description-vi" data-i18n="descriptionVi">Mô tả tiếng Việt</label>
+                <textarea id="program-description-vi" name="description_vi" rows="3" data-translate-target="description_ko" required></textarea>
               </div>
               <div class="form-group">
-                <label for="program-description-ko">Mô tả tiếng Hàn</label>
+                <label for="program-description-ko" data-i18n="descriptionKo">Mô tả tiếng Hàn</label>
                 <textarea id="program-description-ko" name="description_ko" rows="3" required></textarea>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="description_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="description_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="program-features-vi">Quyền lợi tiếng Việt</label>
-                <textarea id="program-features-vi" name="features_vi" rows="6" aria-describedby="features-vi-help"></textarea>
-                <small id="features-vi-help">Mỗi quyền lợi nằm trên một dòng.</small>
+                <label for="program-features-vi" data-i18n="featuresVi">Quyền lợi tiếng Việt</label>
+                <textarea id="program-features-vi" name="features_vi" rows="6" aria-describedby="features-vi-help" data-translate-target="features_ko" data-translate-mode="lines"></textarea>
+                <small id="features-vi-help" data-i18n="featureHelp">Mỗi quyền lợi nằm trên một dòng.</small>
               </div>
               <div class="form-group">
-                <label for="program-features-ko">Quyền lợi tiếng Hàn</label>
+                <label for="program-features-ko" data-i18n="featuresKo">Quyền lợi tiếng Hàn</label>
                 <textarea id="program-features-ko" name="features_ko" rows="6" aria-describedby="features-ko-help"></textarea>
-                <small id="features-ko-help">Mỗi quyền lợi nằm trên một dòng.</small>
+                <small id="features-ko-help" data-i18n="featureHelp">Mỗi quyền lợi nằm trên một dòng.</small>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="features_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="features_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="program-price">Giá (VND)</label>
+                <label for="program-price" data-i18n="priceVnd">Giá (VND)</label>
                 <input id="program-price" name="price_vnd" type="number" min="0" step="1" inputmode="numeric" required>
               </div>
               <div class="form-group">
-                <label for="program-order">Thứ tự hiển thị</label>
+                <label for="program-order" data-i18n="displayOrder">Thứ tự hiển thị</label>
                 <input id="program-order" name="display_order" type="number" min="1" step="1" inputmode="numeric" required>
               </div>
             </div>
 
             <label class="admin-checkbox">
               <input name="active" type="checkbox" checked>
-              <span>Hiển thị gói này trên website</span>
+              <span data-i18n="showProgram">Hiển thị gói này trên website</span>
             </label>
 
             <p class="admin-status" data-program-form-status aria-live="polite"></p>
 
             <div class="admin-form-actions">
-              <button class="button button-primary admin-save-button" type="submit">Lưu gói tập</button>
-              <button class="button button-secondary admin-cancel-button" type="button" data-program-cancel hidden>Hủy chỉnh sửa</button>
+              <button class="button button-primary admin-save-button" type="submit" data-i18n="saveProgram">Lưu gói tập</button>
+              <button class="button button-secondary admin-cancel-button" type="button" data-program-cancel data-i18n="cancelEdit" hidden>Hủy chỉnh sửa</button>
             </div>
           </form>
         </section>

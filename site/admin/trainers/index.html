@@ -10,55 +10,60 @@
   <link rel="stylesheet" href="../../assets/css/admin.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../../assets/js/supabase-client.js" defer></script>
+  <script src="../../assets/js/admin-i18n.js" defer></script>
   <script src="../../assets/js/admin-auth.js" defer></script>
+  <script src="../../assets/js/admin-translation.js" defer></script>
   <script src="../../assets/js/admin-trainers.js" defer></script>
 </head>
-<body class="admin-page" data-admin-page="trainers">
+<body class="admin-page" data-admin-page="trainers" data-i18n-title="titleTrainers">
   <header class="admin-header">
-    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ">
+    <a class="brand" href="../../index.html" aria-label="FORGEFIT - Trang chủ" data-i18n-aria-label="homeAria">
       <span class="brand-mark" aria-hidden="true"></span>
       <span>FORGE<span class="brand-slash">//</span>FIT</span>
     </a>
-    <button class="button button-secondary admin-logout" type="button" data-admin-logout>Đăng xuất</button>
+    <div class="admin-header-actions">
+      <button class="admin-language-toggle" type="button" data-admin-language-toggle data-i18n="switchLanguage" data-i18n-aria-label="switchLanguageAria">한국어</button>
+      <button class="button button-secondary admin-logout" type="button" data-admin-logout data-i18n="logout">Đăng xuất</button>
+    </div>
   </header>
 
   <main class="admin-workspace-shell">
-    <p class="admin-loading" data-admin-loading role="status">Đang kiểm tra quyền truy cập…</p>
+    <p class="admin-loading" data-admin-loading role="status" data-i18n="checkingAccess">Đang kiểm tra quyền truy cập…</p>
 
     <section class="admin-workspace" data-admin-content hidden aria-labelledby="admin-trainers-title">
-      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị">
-        <a href="../">Dashboard</a>
+      <nav class="admin-breadcrumb" aria-label="Điều hướng quản trị" data-i18n-aria-label="adminBreadcrumb">
+        <a href="../" data-i18n="dashboard">Dashboard</a>
         <span aria-hidden="true">/</span>
-        <span>Trainers</span>
+        <span data-i18n="trainers">Trainers</span>
       </nav>
 
       <div class="admin-workspace-heading">
         <div>
           <p class="eyebrow">FORGEFIT Admin</p>
-          <h1 id="admin-trainers-title">Trainers</h1>
-          <p class="admin-intro">Quản lý hồ sơ tiếng Việt, tiếng Hàn và ảnh huấn luyện viên.</p>
+          <h1 id="admin-trainers-title" data-i18n="trainers">Trainers</h1>
+          <p class="admin-intro" data-i18n="trainersIntro">Quản lý hồ sơ tiếng Việt, tiếng Hàn và ảnh huấn luyện viên.</p>
         </div>
-        <p class="admin-user-line">Đăng nhập: <strong data-admin-email></strong></p>
+        <p class="admin-user-line"><span data-i18n="signedIn">Đăng nhập:</span> <strong data-admin-email></strong></p>
       </div>
 
       <div class="admin-trainer-layout">
         <section class="admin-panel" aria-labelledby="trainer-list-title">
           <div class="admin-panel-heading">
             <div>
-              <p class="eyebrow">Danh sách</p>
-              <h2 id="trainer-list-title">Huấn luyện viên</h2>
+              <p class="eyebrow" data-i18n="list">Danh sách</p>
+              <h2 id="trainer-list-title" data-i18n="coaches">Huấn luyện viên</h2>
             </div>
-            <button class="button button-primary admin-small-button" type="button" data-trainer-new>Thêm trainer</button>
+            <button class="button button-primary admin-small-button" type="button" data-trainer-new data-i18n="addTrainer">Thêm trainer</button>
           </div>
-          <p class="admin-list-status" data-trainer-list-status role="status">Đang tải dữ liệu…</p>
+          <p class="admin-list-status" data-trainer-list-status role="status" data-i18n="loadingData">Đang tải dữ liệu…</p>
           <div class="admin-trainer-list" data-trainer-list></div>
         </section>
 
         <section class="admin-panel" aria-labelledby="trainer-form-title">
           <div class="admin-panel-heading">
             <div>
-              <p class="eyebrow">Biểu mẫu</p>
-              <h2 id="trainer-form-title" data-trainer-form-title>Thêm trainer</h2>
+              <p class="eyebrow" data-i18n="form">Biểu mẫu</p>
+              <h2 id="trainer-form-title" data-trainer-form-title data-i18n="addTrainer">Thêm trainer</h2>
             </div>
           </div>
 
@@ -68,69 +73,85 @@
 
             <div class="admin-form-grid">
               <div class="form-group">
-                <label for="trainer-name-vi">Tên tiếng Việt</label>
-                <input id="trainer-name-vi" name="name_vi" type="text" required>
+                <label for="trainer-name-vi" data-i18n="trainerNameVi">Tên tiếng Việt</label>
+                <input id="trainer-name-vi" name="name_vi" type="text" data-translate-target="name_ko" required>
               </div>
               <div class="form-group">
-                <label for="trainer-name-ko">Tên tiếng Hàn</label>
+                <label for="trainer-name-ko" data-i18n="trainerNameKo">Tên tiếng Hàn</label>
                 <input id="trainer-name-ko" name="name_ko" type="text" required>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="name_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="name_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="trainer-title-vi">Chức danh tiếng Việt</label>
-                <input id="trainer-title-vi" name="title_vi" type="text" required>
+                <label for="trainer-title-vi" data-i18n="titleVi">Chức danh tiếng Việt</label>
+                <input id="trainer-title-vi" name="title_vi" type="text" data-translate-target="title_ko" required>
               </div>
               <div class="form-group">
-                <label for="trainer-title-ko">Chức danh tiếng Hàn</label>
+                <label for="trainer-title-ko" data-i18n="titleKo">Chức danh tiếng Hàn</label>
                 <input id="trainer-title-ko" name="title_ko" type="text" required>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="title_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="title_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="trainer-bio-vi">Giới thiệu tiếng Việt</label>
-                <textarea id="trainer-bio-vi" name="bio_vi" rows="4" required></textarea>
+                <label for="trainer-bio-vi" data-i18n="bioVi">Giới thiệu tiếng Việt</label>
+                <textarea id="trainer-bio-vi" name="bio_vi" rows="4" data-translate-target="bio_ko" required></textarea>
               </div>
               <div class="form-group">
-                <label for="trainer-bio-ko">Giới thiệu tiếng Hàn</label>
+                <label for="trainer-bio-ko" data-i18n="bioKo">Giới thiệu tiếng Hàn</label>
                 <textarea id="trainer-bio-ko" name="bio_ko" rows="4" required></textarea>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="bio_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="bio_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="trainer-credentials-vi">Credentials tiếng Việt</label>
-                <textarea id="trainer-credentials-vi" name="credentials_vi" rows="5" aria-describedby="trainer-credentials-vi-help"></textarea>
-                <small id="trainer-credentials-vi-help">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
+                <label for="trainer-credentials-vi" data-i18n="credentialsVi">Credentials tiếng Việt</label>
+                <textarea id="trainer-credentials-vi" name="credentials_vi" rows="5" aria-describedby="trainer-credentials-vi-help" data-translate-target="credentials_ko" data-translate-mode="lines"></textarea>
+                <small id="trainer-credentials-vi-help" data-i18n="credentialsHelp">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
               </div>
               <div class="form-group">
-                <label for="trainer-credentials-ko">Credentials tiếng Hàn</label>
+                <label for="trainer-credentials-ko" data-i18n="credentialsKo">Credentials tiếng Hàn</label>
                 <textarea id="trainer-credentials-ko" name="credentials_ko" rows="5" aria-describedby="trainer-credentials-ko-help"></textarea>
-                <small id="trainer-credentials-ko-help">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
+                <small id="trainer-credentials-ko-help" data-i18n="credentialsHelp">Mỗi chứng chỉ hoặc kinh nghiệm nằm trên một dòng.</small>
+                <span class="admin-translation-row">
+                  <small data-translation-status-for="credentials_ko" aria-live="polite"></small>
+                  <button class="admin-translation-retry" type="button" data-translation-force-for="credentials_ko" data-i18n="translateAgain" hidden>Dịch lại</button>
+                </span>
               </div>
               <div class="form-group">
-                <label for="trainer-order">Thứ tự hiển thị</label>
+                <label for="trainer-order" data-i18n="displayOrder">Thứ tự hiển thị</label>
                 <input id="trainer-order" name="display_order" type="number" min="1" step="1" inputmode="numeric" required>
               </div>
               <div class="form-group">
-                <label for="trainer-image-position">Vị trí ảnh (%)</label>
+                <label for="trainer-image-position" data-i18n="imagePosition">Vị trí ảnh (%)</label>
                 <input id="trainer-image-position" name="image_position_percent" type="number" min="0" max="100" step="1" inputmode="numeric" value="50" required>
-                <small>0 là mép trái, 50 là giữa, 100 là mép phải.</small>
+                <small data-i18n="imagePositionHelp">0 là mép trái, 50 là giữa, 100 là mép phải.</small>
               </div>
             </div>
 
             <div class="admin-image-field">
               <div>
-                <label for="trainer-image">Ảnh trainer</label>
+                <label for="trainer-image" data-i18n="trainerImage">Ảnh trainer</label>
                 <input id="trainer-image" name="image" type="file" accept="image/*" aria-describedby="trainer-image-help">
-                <small id="trainer-image-help">Mỗi lần chọn ảnh sẽ tạo một filename mới để tránh cache.</small>
+                <small id="trainer-image-help" data-i18n="trainerImageHelp">Mỗi lần chọn ảnh sẽ tạo một filename mới để tránh cache.</small>
               </div>
-              <img class="admin-trainer-preview" data-trainer-preview src="../../assets/images/trainer-team.png" alt="Xem trước ảnh trainer">
+              <img class="admin-trainer-preview" data-trainer-preview src="../../assets/images/trainer-team.png" alt="Xem trước ảnh trainer" data-i18n-alt="trainerPreviewAlt">
             </div>
 
             <label class="admin-checkbox">
               <input name="active" type="checkbox" checked>
-              <span>Hiển thị trainer này trên website</span>
+              <span data-i18n="showTrainer">Hiển thị trainer này trên website</span>
             </label>
 
             <p class="admin-status" data-trainer-form-status aria-live="polite"></p>
 
             <div class="admin-form-actions">
-              <button class="button button-primary admin-save-button" type="submit">Lưu trainer</button>
-              <button class="button button-secondary admin-cancel-button" type="button" data-trainer-cancel hidden>Hủy chỉnh sửa</button>
+              <button class="button button-primary admin-save-button" type="submit" data-i18n="saveTrainer">Lưu trainer</button>
+              <button class="button button-secondary admin-cancel-button" type="button" data-trainer-cancel data-i18n="cancelEdit" hidden>Hủy chỉnh sửa</button>
             </div>
           </form>
         </section>

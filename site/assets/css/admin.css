@@ -99,6 +99,35 @@
   margin: 0 auto;
 }
 
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-language-toggle {
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid rgba(235, 244, 241, 0.32);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.admin-language-toggle:hover,
+.admin-language-toggle:focus-visible {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+
+.admin-language-toggle-auth {
+  justify-self: end;
+}
+
 .admin-logout {
   min-height: 44px;
   padding: 12px 18px;
@@ -461,6 +490,47 @@
   color: #66736f;
 }
 
+.admin-translation-row {
+  display: flex;
+  min-height: 27px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.admin-translation-row small {
+  margin-top: 0;
+}
+
+.admin-translation-status.is-translating {
+  color: #51605c;
+}
+
+.admin-translation-status.is-translated {
+  color: #24503f;
+  font-weight: 800;
+}
+
+.admin-translation-status.is-translationError,
+.admin-translation-status.is-translationConflict {
+  color: #8f2722;
+}
+
+.admin-translation-retry {
+  flex: none;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #24503f;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .admin-checkbox {
   display: flex;
   align-items: center;
@@ -491,6 +561,17 @@
 
   .admin-header {
     min-height: 74px;
+  }
+
+  .admin-header-actions {
+    gap: 6px;
+  }
+
+  .admin-language-toggle,
+  .admin-logout {
+    min-height: 38px;
+    padding: 9px 11px;
+    font-size: 0.72rem;
   }
 
   .admin-logout {
